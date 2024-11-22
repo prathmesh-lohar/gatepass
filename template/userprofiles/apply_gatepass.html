@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Gate Pass</title>
+</head>
+<body>
+    <h1>Apply for Gate Pass</h1>
+    <form method="POST">
+        {% csrf_token %}
+        
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required><br>
+
+        <label for="time">Time:</label>
+        <input type="time" id="time" name="time" required><br>
+
+        <label for="pass_type">Pass Type:</label>
+        <select id="pass_type" name="pass_type" required>
+            <option value="guest">Guest</option>
+            <option value="vip">VIP</option>
+        </select><br>
+
+        <button type="submit">Apply</button>
+    </form>
+</body>
+</html>

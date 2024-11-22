@@ -1,0 +1,45 @@
+
+<h1>Existing Gate Passes</h1>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Gate Pass Number</th>
+                <th>User</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Time In</th>
+                <th>Time Out</th>
+                <th>Pass Type</th>
+                <th>Approval Status</th>
+                <th>qr </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for gatepass in gatepasses %}
+            <tr>
+                <td>{{ gatepass.gatepass_number }}</td>
+                <td>{{ gatepass.user.username }}</td>
+                <td>{{ gatepass.date }}</td>
+                <td>{{ gatepass.time }}</td>
+                <td>{{ gatepass.time_in }}</td>
+                <td>{{ gatepass.time_out }}</td>
+                <td>{{ gatepass.get_pass_type_display }}</td>
+                <td>{{ gatepass.get_master_admin_approval_display }}</td>
+                <td><img src="{{ gatepass.qr_code.url }}" alt="QR Code for Gate Pass" width="100px">
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8">No gate passes found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+{% if show_apply_button %}
+    <button onclick="window.location.href='/apply_gatepass'">Apply for Gate Pass</button>
+{% else %}
+    <p>You have a applied gate pass.</p>
+{% endif %}
