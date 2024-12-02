@@ -1,0 +1,76 @@
+body {
+    background-color: #181818;
+}
+
+.left {
+    background: #181818;
+}
+
+.right {
+    border-radius: 36px 0px 0px 36px;
+    border: 2px solid #FFF;
+    background: #FFF;
+    box-shadow: -13px 0px 20px 0px rgba(0, 0, 0, 0.10), -13px 0px 10px 0px rgba(0, 71, 255, 0.04);
+}
+
+.top-head h3 {
+    margin-top: 40px;
+}
+
+.top-head h3 {
+    color: #D9D9D9;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.17px;
+}
+
+.slider {
+    margin-top: 18%;
+    margin-bottom: 30%;
+}
+
+.slider .carousel {
+    /* max-width: 300px; */
+}
+
+.slider .carousel-dark .carousel-indicators [data-bs-target] {
+    height: 1px;
+    width: 6px;
+    border-radius: 5px;
+    border: 1.3px solid #D8D8D8;
+    background: linear-gradient(90deg, #FFF 0%, #FFF 100%);
+}
+
+.slider .text-center h5 {
+    margin-top: 0;
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.slider .text-center p {
+    margin-top: 18px;
+    color: rgba(255, 255, 255, 0.56);
+    text-align: center;
+    font-family: Poppins;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+}
+
+.slider .carousel-caption {}
+
+.slider .carousel-item {}
+
+.slider .carousel-inner img {
+    max-width: 200px;
+    justify-content: center;
+}

@@ -1,0 +1,173 @@
+body {
+    background-color: #181818;
+}
+
+.left {
+    background: #181818;
+}
+
+.right {
+    border-radius: 36px 0px 0px 36px;
+    border: 2px solid #FFF;
+    background: #FFF;
+    box-shadow: -13px 0px 20px 0px rgba(0, 0, 0, 0.10), -13px 0px 10px 0px rgba(0, 71, 255, 0.04);
+}
+
+.top-head h3 {
+    margin-top: 40px;
+}
+
+.top-head h3 {
+    color: #D9D9D9;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.17px;
+}
+
+.slider {
+    margin-top: 14%;
+    margin-bottom: 27%;
+}
+
+.slider .carousel {
+    /* max-width: 300px; */
+}
+
+.slider .carousel-dark .carousel-indicators [data-bs-target] {
+    height: 1px;
+    width: 6px;
+    border-radius: 5px;
+    border: 1.3px solid #D8D8D8;
+    background: linear-gradient(90deg, #FFF 0%, #FFF 100%);
+}
+
+.slider .text-center h5 {
+    margin-top: 0;
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.slider .text-center p {
+    margin-top: 18px;
+    color: rgba(255, 255, 255, 0.56);
+    text-align: center;
+    font-family: Poppins;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+}
+
+.slider .carousel-caption {}
+
+.slider .carousel-item {}
+
+.slider .carousel-inner img {
+    max-width: 200px;
+    justify-content: center;
+}
+
+.form-data {
+    padding: 60px 110px 60px 110px;
+
+}
+
+.form-data .form-header {
+    color: #000;
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.form-data .btn-logwith {
+    margin-top: 15px;
+    border-radius: 9px;
+    border: 1px solid #E2E2E2;
+
+    color: #646464;
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.form-data .or {
+    margin-top: 22px;
+}
+
+.form-data .or .allog {
+    margin-top: 14px;
+    color: #919191;
+    font-family: Poppins;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.form-data .btn-submit {
+    margin-top: 32px;
+    border-radius: 40px;
+    border: 1px solid #E2E2E2;
+    background: #363636;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    padding: 10px 30px;
+}
+
+.form-data .allog {
+    margin-top: 20px;
+    color: #919191;
+    font-family: Poppins;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.form-data .form-label {
+    color: #484848;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.form-data input {
+    display: flex;
+
+    padding: 13px 19px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    border-radius: 50px;
+    border: 1.5px solid #D9D9D9;
+}
+
+.form-data input::placeholder {
+    color: #C2C2C2;
+    font-family: Poppins;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}

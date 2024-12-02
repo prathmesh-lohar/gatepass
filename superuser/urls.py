@@ -7,5 +7,6 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("",views.home, name="home"),
+    path("entry/<int:id>",views.entry, name="entry"),
    
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)    

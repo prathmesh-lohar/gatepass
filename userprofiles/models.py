@@ -159,5 +159,7 @@ class entry(models.Model):
     alert = models.CharField(blank=True,null=True, max_length=50)
     action = models.CharField(blank=True,null=True, max_length=50)
     
+    detected_face  = models.ImageField(upload_to="detected_faces", height_field=None, width_field=None, max_length=None, blank=True, null=True)
+    
     def __str__(self):
         return f"{self.user.username} - {self.gatepass}- {self.time_in}- {self.time_out} - {self.date}"
