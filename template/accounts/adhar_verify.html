@@ -1,0 +1,82 @@
+{% extends "accounts/base.html "%}
+{% block title %}Verify  Adhar {% endblock title %}
+{% block main %} 
+<div class="col-md-6">
+    <h3 class="text-primary mb-4"><a href="#" class="text-decoration-none text-primary">← Adhar Verification </a></h3>
+    <form method="POST" >
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="adhar" class="form-label">Adhar Card Number:</label>
+        <input type="text" class="form-control" id="adhar" name="adhar" placeholder="Enter 12-digit Aadhaar number" pattern="\d{12}" required>
+        <div id="emailHelp" class="form-text">12 Digit Adhar number.</div>
+    </div>
+      <div class="mb-3 text-center">
+       <img src="data:image/png;base64,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" alt="" class="w-80 mx-2"  height="60px">
+        
+    </div>
+    
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+          <div class="col-12 col-md-6">
+            <p class="text-center text-primary mb-4" style="font-size: 14px;">The OTP is sent to your registered Mobile number
+                Check your Mobile!</p>
+            <form>
+              <div class="d-flex justify-content-center gap-2">
+                <input type="text" class="form-control otp-input" maxlength="1" pattern="\d*" required>
+                <input type="text" class="form-control otp-input" maxlength="1" pattern="\d*" required>
+                <input type="text" class="form-control otp-input" maxlength="1" pattern="\d*" required>
+                <input type="text" class="form-control otp-input" maxlength="1" pattern="\d*" required>
+                <input type="text" class="form-control otp-input" maxlength="1" pattern="\d*" required>
+                <input type="text" class="form-control otp-input" maxlength="1" pattern="\d*" required>
+              </div>
+              <div class="text-center my-4">
+                <!-- <button type="submit" class="btn /abtn-primary w-50">Verify OTP</button> -->
+             <span style="font-size: 12px; margin-top:5px;" >Resend OTP is disable for 30 secs. <a href="">Resend </a> </span>  
+            </div>
+        
+          </div>
+        </div>
+      </div>
+      <script>
+        // Automatically move to the next input field
+        document.querySelectorAll(".otp-input").forEach((input, index, inputs) => {
+          input.addEventListener("input", (e) => {
+            if (e.target.value.length === 1 && index < inputs.length - 1) {
+              inputs[index + 1].focus();
+            }
+            if (e.target.value.length === 0 && index > 0) {
+              inputs[index - 1].focus();
+            }
+          });
+        });
+      </script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    
+      <div class="d-flex gap-3">
+       
+        <button type="submit" class="btn btn-primary w-50" >Verify</button>
+ 
+        <button type="button" class="btn btn-secondary w-50">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+
+  <style>
+    .otp-input {
+      width: 3rem;
+      height: 3rem;
+      text-align: center;
+      font-size: 1.5rem;
+      border: 1px solid #ced4da;
+      border-radius: 0.375rem;
+    }
+    .otp-input:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+  </style>
+
+
+{% endblock main %}

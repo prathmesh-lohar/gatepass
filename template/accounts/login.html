@@ -1,6 +1,42 @@
-<form method="post">
+{% extends "accounts/base.html "%}
+{% block title %}Signup {% endblock title %}
+{% block main %} 
+<div class="col-md-6">
+    <h3 class="text-primary mb-4"><a href="#" class="text-decoration-none text-primary">← Signin</a></h3>
+           <!-- Display messages -->
+           {% if messages %}
+           <div>
+               {% for message in messages %}
+                   <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+               {% endfor %}
+           </div>
+       {% endif %}
+
+       <form method="POST">
+           {% csrf_token %}
+           <div class="mb-3">
+               <label for="adhar" class="form-label">Adhar Number:</label>
+               <input type="number" class="form-control" id="adhar" name="adhar_number" placeholder="Enter Your Adhar Number" required>
+
+           </div>
+           <div class="mb-3">
+               <label for="password" class="form-label">Password:</label>
+               <input placeholder="Enter Your Password" type="password" class="form-control" id="password" name="password" required>
+           </div>
+         
+           <div class="d-flex gap-3">
+               <button type="submit" class="btn btn-primary w-50">Login</button>
+               <button type="button" class="btn btn-secondary w-50" onclick="window.location='/accounts/register'">Signup</button>
+           </div>
+       </form>
+
+  </div>
+{% endblock main %}
+
+
+<!-- <form method="post">
     {% csrf_token %}
     <input type="number" name="adhar_number" placeholder="Aadhaar Number" required>
     <input type="password" name="password" placeholder="Password" required>
     <button type="submit">Login</button>
-</form>
+</form> -->

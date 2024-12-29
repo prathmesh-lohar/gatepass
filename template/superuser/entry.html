@@ -5,11 +5,14 @@ cctv
 {% endblock title %}
 {% block nav_link %}
 <span style="text-decoration: none; color:#878787; cursor: pointer;"
-    onclick="window.location.href='/'">Home</span> > Ai Surveillance
+    onclick="window.location.href='/superuser/live_entry'">Live Matching</span> > Report
 {% endblock nav_link %}
 
 {% block main %}
 {% load static %}
+
+<link rel="stylesheet" href="{% static 'css/livescreen.css' %}">
+
 
 <div class="row">
 
@@ -18,7 +21,7 @@ cctv
             <div class="video-section">
                 <div class="heading-part">
                     <div class="left">
-                        <span>Detected Face</span>
+                        <span>Video Streamming</span>
                     </div>
                     <div class="right">
                         <span><svg xmlns="http://www.w3.org/2000/svg" width="19"
@@ -50,10 +53,16 @@ cctv
 
 
                 <div class="camras">
-                    <div id="video-container" class="max-video-container" > 
-                        <img id="loading-gif" src="{% static "gif/loading.gif" %}" alt="Loading..." />
-                      </div>
+                    <div id="video-container" class="max-video-container">
+                        <img id="loading-gif" src="{% static 'gif/loading.gif' %}" alt="Loading..." />
+                        <!-- Fullscreen button -->
+                        <button id="fullscreen-btn" class="fullscreen-btn" onclick="toggleFullscreen()">
+                            <i class="fas fa-expand"></i> <!-- Font Awesome Icon -->
+                        </button>
+                    </div>
                 </div>
+                
+                
 
               
                 
@@ -160,16 +169,39 @@ cctv
 
             </div>
 
-            <div class="container">
+            <div class="container my-2 mx-0 px-0">
                 
-                <div class="row my-2">
-                    <div class="col-4"><img src="{% if entry.detected_face %}{{ entry.detected_face.url }}{% else %}{% static 'qrdef.jpeg' %}{% endif %}" style="height:100px;"  alt></div>
-                    <div class="col-4"><img src="{{user.userprofile.photo1.url}}" style="height: 100px; border: 2px solid black;"  alt></div>
+                <div class="row ">
+                    <div class="col-6" id="data-container">
+                        <img src="{% if entry.detected_face %}{{entry.detected_face.url}}{% elif entry.image_type == 'QR Code' %}{% static 'qr.jpg' %}{% else %}{% static 'default.png' %}{% endif %}"  alt="Detected face" class="match_imgs">
+                        <div class="data mt-3">
+                            <p class="face_match_data">Face: {{entry.dtected_face_file_id}} <span id="dtected_face_file_id"></span> </p>
+                            
+                            <p class="face_match_data">Male: 29 yrs</p>
+                            <p class="face_match_data">Searching</p>
+                            </div>
+                    </div>
+                    
+
+                    <div class="col-6">
+                        <img src="{{user.userprofile.photo1.url}}" class="match_imgs" style=""  alt="Detected face" >
+                        <div class="data mt-3">
+                            <p class="face_match_data">Profile: {{user.username}} <span id="dtected_face_file_id"></span> </p>
+                            
+                            <p class="face_match_data">{{entry.gatepass}}</p>
+                            <p class="face_match_data">Matching : {{entry.matching_percentage}} %</p>
+                            </div>
+                    </div>
+
                 </div>
                 <div class="row">
                     <div class="col-6"><img style="width: 100%;" src alt></div>
 
                 </div>
+                <!-- <button class="btn bg-success w-100 rounded-0 gate_state" >Gate <span  id="action"></span></button> -->
+                <button class="btn btn-success w-100 rounded-0 gate_state" id="gateButton">
+                    Action : <span id="action">{{entry.action}}</span>
+                </button>
             </div>
 
         </div>
@@ -285,7 +317,7 @@ cctv
                             <th>#</th>
                             <th>Gatepass</th>
                             <th>Time In</th>
-                            <th>Date</th>
+                    
                             <th>Image Type</th>
                             <th>Matching Percentage</th>
                             <th>Action</th>
@@ -318,7 +350,10 @@ cctv
                     const tableBody = document.getElementById("table-body");
                     tableBody.innerHTML = ""; // Clear the table body
             
-                    data.forEach((item, index) => {
+                    // Reverse the data to display the newest entries at the top
+                    const reversedData = data.reverse();
+            
+                    reversedData.forEach((item) => {
                         const row = document.createElement("tr");
             
                         // Make the entire row clickable
@@ -327,15 +362,12 @@ cctv
                         });
             
                         row.innerHTML = `
-                            <td> ${item.id}</td>
+                            <td>${item.id}</td>
                             <td>${item.gatepass || '-'}</td>
                             <td>${item.time_in || '-'}</td>
-                            <td>${item.date || '-'}</td>
                             <td>${item.image_type || '-'}</td>
                             <td>${item.matching_percentage || '-'}</td>
-                            <td>
-                                ${item.action}
-                            </td>
+                            <td>${item.action}</td>
                         `;
             
                         tableBody.appendChild(row);
@@ -352,6 +384,7 @@ cctv
                 // Initial fetch
                 fetchData();
             </script>
+            
             
 
             <!-- <div class="table_div">
@@ -476,35 +509,35 @@ cctv
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1"
-    aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Select Date</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
 
-                <form onsubmit="submitForm(event)">
-                    <div class="mb-3">
-                        <label for="date" class="form-label">Select Date</label>
-                        <input type="date" class="form-control" id="dateInput"
-                            name="date" aria-describedby="emailHelp">
-                        <input type="hidden" value="{{id}}" id="id">
-                    </div>
 
-                    <button type="submit"
-                        class="btn btn-primary">Submit</button>
-                </form>
 
-            </div>
+<!-- <script>
+    // Function to fetch and update data
+    async function fetchLatestEntry() {
+        try {
+            const response = await fetch('http://localhost:8000/superuser/latest_entry_json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
-        </div>
-    </div>
-</div>
+            const data = await response.json();
+            if (data.entry) {
+                // Update the HTML with API response data
+                document.getElementById('detected-face').src = data.entry.detected_face || '';
+             
+            }
+        } catch (error) {
+            console.error('Error fetching the latest entry:', error);
+        }
+    }
+
+    // Fetch latest entry every 5 seconds
+    setInterval(fetchLatestEntry, 100);
+
+    // Initial fetch
+    fetchLatestEntry();
+</script> -->
 
 
 <script>
@@ -529,5 +562,109 @@ cctv
   
     loadVideo();
   </script>
+
+  
+
+
+  <!-- full screen  -->
+
+  <script>
+    function toggleFullscreen() {
+        const videoContainer = document.getElementById("video-container");
+        const video = document.getElementById("video");
+        const fullscreenIcon = document.querySelector("#fullscreen-btn i");
+    
+        if (!document.fullscreenElement) {
+            // Enter fullscreen
+            if (videoContainer.requestFullscreen) {
+                videoContainer.requestFullscreen();
+            } else if (videoContainer.mozRequestFullScreen) { // Firefox
+                videoContainer.mozRequestFullScreen();
+            } else if (videoContainer.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                videoContainer.webkitRequestFullscreen();
+            } else if (videoContainer.msRequestFullscreen) { // IE/Edge
+                videoContainer.msRequestFullscreen();
+            }
+            fullscreenIcon.classList.remove("fa-expand");
+            fullscreenIcon.classList.add("fa-compress");
+        } else {
+            // Exit fullscreen
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) { // Firefox
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) { // Chrome, Safari, Opera
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { // IE/Edge
+                document.msExitFullscreen();
+            }
+            fullscreenIcon.classList.remove("fa-compress");
+            fullscreenIcon.classList.add("fa-expand");
+        }
+    }
+    
+  </script>
+
+ <!--  -->
+
+ <style>
+    /* Container styling */
+#video-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    width: 100%;
+    height: auto;
+}
+
+/* Video styling */
+#video {
+    width: 100%; /* Default width */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: contain; /* Prevent cropping */
+}
+
+/* Fullscreen container styling */
+#video-container:fullscreen {
+    background-color: black;
+}
+
+#video:fullscreen {
+    width: 100vw; /* Take up the full screen width */
+    height: 100vh; /* Take up the full screen height */
+    object-fit: contain; /* Maintain aspect ratio without cropping */
+}
+
+/* Fullscreen button styling */
+.fullscreen-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.3s ease;
+}
+
+.fullscreen-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.fullscreen-btn i {
+    font-size: 18px;
+}
+
+ </style>
+
+ 
 
 {% endblock main %}

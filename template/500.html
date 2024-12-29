@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}
+cctv
+
+{% endblock title %}
+{% block nav_link %}
+<span style="text-decoration: none; color:#878787; cursor: pointer;"
+    onclick="window.location.href='/'">Home</span> > Ai Surveillance
+{% endblock nav_link %}
+
+{% block main %}
+{% load static %}
+
+<div class="row">
+
+    <div class="container text-center my-5">
+        <h6>500: Server Error</h6>
+        <button class="btn btn-outline-light"> <a href="/superuser/live_entry">Back</a> </button>
+    </div>
+</div>
+
+
+
+
+{% endblock main %}

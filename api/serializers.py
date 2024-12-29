@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from userprofiles.models import gatepass,entry
+from userprofiles.models import gatepass,entry,FlagElement,MatchElement
 
 class GatepassSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,4 +25,18 @@ class EntrySerializer(serializers.ModelSerializer):
         model = entry
         # fields = ['id', 'user', 'gatepass', 'time_in', 'time_out', 'date']
         fields = '__all__'
+        
+        
+
+class FlagElementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FlagElement
+        fields = ['flag']
+        
+
+class MatchElementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MatchElement
+        fields = ['real_t_match']
+        
         

@@ -1,0 +1,20 @@
+.match_imgs{
+    width:90%;
+    border: 2px solid rgb(147, 146, 146);
+    height: 150px;
+}
+.face_match_data{
+    font-size: 14px;
+    font-family: Poppins;
+    color: rgb(74, 76, 77);
+    line-height: 0.2rem;
+}
+
+.gate_state {
+    font-size: 16px;
+    font-weight: 500;
+    font-family: Poppins;
+    color: white;
+    margin-top: -28px;
+
+}

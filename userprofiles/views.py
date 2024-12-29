@@ -6,37 +6,37 @@ from datetime import datetime
 
 @login_required
 def home(request):
-    # Get all gate passes for the logged-in user
-    gatepasses = gatepass.objects.filter(user=request.user)
+    # # Get all gate passes for the logged-in user
+    # gatepasses = gatepass.objects.filter(user=request.user)
 
-    show_apply_button = True  # Default to showing the button, assuming no valid pass
+    # show_apply_button = True  # Default to showing the button, assuming no valid pass
 
-    if gatepasses.exists():
-        # Loop through each gate pass to check its status
-        for user_gatepass in gatepasses:
-            # Check if the gate pass is approved
-            # if user_gatepass.master_admin_approval == 'pass':
-            #     # Check if both time_in and time_out are present
-            #     # if  user_gatepass.time_out:
-            #     #     show_apply_button = True  # Do not show the apply button if both are present
-            #     #     break  # Exit the loop since we found a valid pass
+    # if gatepasses.exists():
+    #     # Loop through each gate pass to check its status
+    #     for user_gatepass in gatepasses:
+    #         # Check if the gate pass is approved
+    #         # if user_gatepass.master_admin_approval == 'pass':
+    #         #     # Check if both time_in and time_out are present
+    #         #     # if  user_gatepass.time_out:
+    #         #     #     show_apply_button = True  # Do not show the apply button if both are present
+    #         #     #     break  # Exit the loop since we found a valid pass
 
-            # If the gate pass is rejected, allow applying again
+    #         # If the gate pass is rejected, allow applying again
             
-            if user_gatepass.master_admin_approval == 'reject':
-                show_apply_button = True
-                break  # Exit the loop since a rejected pass allows applying again
+    #         if user_gatepass.master_admin_approval == 'reject':
+    #             show_apply_button = True
+    #             break  # Exit the loop since a rejected pass allows applying again
 
-    else:
-        # No gate pass found, allow the user to apply for a new one
-        show_apply_button = True
+    # else:
+    #     # No gate pass found, allow the user to apply for a new one
+    #     show_apply_button = True
 
-    data = {
-        'show_apply_button': show_apply_button,
-        'gatepasses': gatepasses  # All gate passes of the user
-    }
+    # data = {
+    #     'show_apply_button': show_apply_button,
+    #     'gatepasses': gatepasses  # All gate passes of the user
+    # }
 
-    return render(request, 'userprofiles/home.html', data)
+    return render(request, 'userprofiles/base.html')
 
 
 @login_required

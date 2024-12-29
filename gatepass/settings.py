@@ -43,10 +43,13 @@ INSTALLED_APPS = [
     'userprofiles',
     'api',
     'rest_framework',
+    'django_cleanup.apps.CleanupConfig',
+    'import_export',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -120,6 +123,13 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
+
+
+# Media settings
+MEDIA_ROOT = 'C:/media'  # Directory where uploaded files will be stored
+MEDIA_URL = '/media/'  # URL to access media files
+
+
 
 STATIC_URL = 'static/'
 

@@ -37,7 +37,32 @@ class RegistrationNumberField(models.CharField):
 
 
 
-# User Profile Model
+import os
+from django.utils.deconstruct import deconstructible
+
+@deconstructible
+class UserProfilePhotoPath:
+    def __init__(self, photo_type):
+        self.photo_type = photo_type
+
+    def __call__(self, instance, filename):
+        # Extract user ID and username
+        user_id = instance.user.id
+        username = instance.user.username
+
+        # Determine the new filename
+        if self.photo_type == 1:
+            new_filename = f"{user_id}_{username}{os.path.splitext(filename)[1]}"
+        elif self.photo_type == 2:
+            new_filename = f"{user_id}_{username}_2{os.path.splitext(filename)[1]}"
+        elif self.photo_type == 3:
+            new_filename = f"{user_id}_{username}_3{os.path.splitext(filename)[1]}"
+        else:
+            raise ValueError("Invalid photo type")
+
+        # Construct the upload path
+        return os.path.join("userprofiles", "photos", new_filename)
+
 class userprofile(models.Model):
     register_number = RegistrationNumberField(unique=True)  # No need to pass max_length here
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -45,15 +70,20 @@ class userprofile(models.Model):
     last_name = models.CharField(max_length=255, blank=True, null=True)
     gender = models.CharField(max_length=20, blank=True, null=True)
     
-    address_line = models.CharField(max_length=255, blank=True, null=True)
-    address_distract = models.CharField(max_length=255, blank=True, null=True)
-    address_taluka = models.CharField(max_length=255, blank=True, null=True)
-    address_pin_code = models.IntegerField()
+    address = models.TextField(max_length=255, blank=True, null=True)
+    
+    # address_line = models.CharField(max_length=255, blank=True, null=True)
+    # address_distract = models.CharField(max_length=255, blank=True, null=True)
+    # address_taluka = models.CharField(max_length=255, blank=True, null=True)
+    # address_pin_code = models.IntegerField()
     
     adhar_number = models.IntegerField(blank=True, null=True)
     mobile_number = models.IntegerField(blank=True, null=True)
-    photo1 = models.ImageField(upload_to="userprofiles/photos", blank=True, null=True)
-    photo2 = models.ImageField(upload_to="userprofiles/photos", blank=True, null=True)
+    photo1 = models.ImageField(upload_to=UserProfilePhotoPath(1), blank=True, null=True)
+    photo2 = models.ImageField(upload_to=UserProfilePhotoPath(2), blank=True, null=True)
+    photo3 = models.ImageField(upload_to=UserProfilePhotoPath(2), blank=True, null=True)
+    
+    is_adhar_verify = models.BooleanField(default=0)
     
     def __str__(self):
         return f"{self.user.username} - {self.adhar_number}"
@@ -65,31 +95,43 @@ class GatepassNumberField(models.CharField):
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('max_length', 10)
         super().__init__(*args, **kwargs)
+        # Directly set attname to the field's name as a string
+        self.attname = self.name
+
+    def contribute_to_class(self, cls, name, private_only=False):
+        # Call super to handle basic field registration
+        super().contribute_to_class(cls, name, private_only)
+        # No need to call set_attributes_from_name here
 
     def pre_save(self, model_instance, add):
-        # Get the field name dynamically from the model instance
-        field_name = self.attname  # Correctly get the field name from the attribute name
-        
-        # Check if the gatepass_number is already set
-        if not getattr(model_instance, field_name):
+        # Dynamically get the field value
+        field_value = getattr(model_instance, self.attname)
+
+        if not field_value:
             prefix = "GP"
             next_number = self.get_next_number(model_instance.__class__)
             formatted_number = f"{prefix}{next_number:05d}"
-            setattr(model_instance, field_name, formatted_number)
+            setattr(model_instance, self.attname, formatted_number)
             return formatted_number
-        return super().pre_save(model_instance, add)
+        return field_value
 
     def get_next_number(self, model_class):
         # Get the last gatepass number and increment it
         last_instance = model_class.objects.order_by('gatepass_number').last()
-        if last_instance:
-            last_number = int(last_instance.gatepass_number[2:])  # Assuming format 'GP00001'
-            return last_number + 1
+        if last_instance and last_instance.gatepass_number:
+            try:
+                last_number = int(last_instance.gatepass_number[2:])  # Assuming format 'GP00001'
+                return last_number + 1
+            except ValueError:
+                pass
         return 1
 
-
 class gatepass(models.Model):
-    gatepass_number = GatepassNumberField(unique=True, blank=True, null=True, max_length=100)  # Set null=True to allow it to be empty initially
+    # gatepass_number = GatepassNumberField(unique=True, blank=True, null=True, max_length=100)  # Set null=True to allow it to be empty initially
+   
+    gatepass_number = models.IntegerField( blank=True, null=True, max_length=100)  # Set null=True to allow it to be empty initially
+    
+   
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     time = models.TimeField(blank=True, null=True)
@@ -145,7 +187,7 @@ class gatepass(models.Model):
  
 
 class entry(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True,null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,blank=True,null=False)
     # gatepass = models.ForeignKey(gatepass, on_delete=models.CASCADE)
     gatepass = models.CharField(blank=True,null=True, max_length=50)
     
@@ -154,12 +196,51 @@ class entry(models.Model):
     date = models.DateField(blank=True, null=True)
     
     image_type =  models.CharField(blank=True,null=True, max_length=50)
-    matching_percentage = models.IntegerField(blank=True,null=True,)
+    matching_percentage = models.FloatField(blank=True,null=True,)
     activities = models.CharField(blank=True,null=True, max_length=50)
     alert = models.CharField(blank=True,null=True, max_length=50)
     action = models.CharField(blank=True,null=True, max_length=50)
     
     detected_face  = models.ImageField(upload_to="detected_faces", height_field=None, width_field=None, max_length=None, blank=True, null=True)
     
+    dtected_face_file_id = models.CharField(blank=True,null=True, max_length=50)
+    
+    
     def __str__(self):
         return f"{self.user.username} - {self.gatepass}- {self.time_in}- {self.time_out} - {self.date}"
+
+
+
+class FlagElement(models.Model):
+    flag = models.IntegerField(default=0)  # Example field to store flag value
+
+
+    def save(self, *args, **kwargs):
+        # Ensure only one instance of FlagElement exists
+        if not FlagElement.objects.exists():
+            super().save(*args, **kwargs)
+        else:
+            # If an instance exists, update it instead of creating a new one
+            FlagElement.objects.update(flag=self.flag)
+           
+
+    def __str__(self):
+        return f"FlagElement(id={self.id}, flag={self.flag})"
+    
+    
+class MatchElement(models.Model):
+    real_t_match = models.FloatField(default=0)
+
+    def save(self, *args, **kwargs):
+        # Ensure only one instance exists
+        if MatchElement.objects.exists() and not self.pk:
+            # Update the existing instance
+            match_element = MatchElement.objects.first()
+            match_element.real_t_match = self.real_t_match
+            match_element.save()
+        else:
+            # Create or update the current instance
+            super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"MatchElement(id={self.id}, real_t_match={self.real_t_match})"
